@@ -1,5 +1,5 @@
 {
-  "name": "json-schema-to-zod",
+  "name": "@cabloy/json-schema-to-zod",
   "version": "2.6.1",
   "description": "Converts JSON schema objects or files into Zod schemas",
   "types": "./dist/types/index.d.ts",
@@ -36,7 +36,13 @@
       "test"
     ]
   },
-  "keywords": ["zod", "json", "schema", "converter", "cli"],
+  "keywords": [
+    "zod",
+    "json",
+    "schema",
+    "converter",
+    "cli"
+  ],
   "author": "Stefan Terdell",
   "contributors": [
     "Chen (https://github.com/werifu)",
