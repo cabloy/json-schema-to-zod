@@ -2,9 +2,10 @@ import { JsonSchemaObject } from "../Types.js";
 import { withMessage } from "../utils/withMessage.js";
 
 export const parseNumber = (
-  schema: JsonSchemaObject & { type: "number" | "integer" },
+  schema: JsonSchemaObject & { type: "number" | "integer" }
 ) => {
-  let r = "z.number()";
+  // let r = "z.number()";
+  let r = withMessage(schema, "default", () => ["z.number(", ")"]);
 
   if (schema.type === "integer") {
     r += withMessage(schema, "type", () => [".int(", ")"]);
