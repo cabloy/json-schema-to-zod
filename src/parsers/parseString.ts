@@ -2,10 +2,8 @@ import { JsonSchemaObject } from "../Types.js";
 import { withMessage } from "../utils/withMessage.js";
 import { parseSchema } from "./parseSchema.js";
 
-export const parseString = (
-  schema: JsonSchemaObject & { type: "string"; errorMessage: any }
-) => {
-  // let r = `z.string(${errorMessageDefault})`;
+export const parseString = (schema: JsonSchemaObject & { type: "string" }) => {
+  // let r = "z.string()";
   let r = withMessage(schema, "default", () => ["z.string(", ")"]);
 
   r += withMessage(schema, "format", ({ value }) => {
