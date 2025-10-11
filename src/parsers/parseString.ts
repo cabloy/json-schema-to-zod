@@ -2,8 +2,11 @@ import { JsonSchemaObject } from "../Types.js";
 import { withMessage } from "../utils/withMessage.js";
 import { parseSchema } from "./parseSchema.js";
 
-export const parseString = (schema: JsonSchemaObject & { type: "string" }) => {
-  let r = "z.string()";
+export const parseString = (
+  schema: JsonSchemaObject & { type: "string"; errorMessage: any }
+) => {
+  // let r = `z.string(${errorMessageDefault})`;
+  let r = withMessage(schema, "default", () => ["z.string(", ")"]);
 
   r += withMessage(schema, "format", ({ value }) => {
     switch (value) {
@@ -56,25 +59,25 @@ export const parseString = (schema: JsonSchemaObject & { type: "string" }) => {
     }
   });
 
-  const contentMediaType = withMessage(schema, "contentMediaType", ({ value }) => {
-    if (value === "application/json") {
-      return [
-        ".transform((str, ctx) => { try { return JSON.parse(str); } catch (err) { ctx.addIssue({ code: \"custom\", message: \"Invalid JSON\" }); }}",
-        ", ",
-        ")"
-      ]
-    }
-  });
-
-  if(contentMediaType != ""){
-    r += contentMediaType;
-    r += withMessage(schema, "contentSchema", ({ value })=>{
-      if (value && value instanceof Object){
+  const contentMediaType = withMessage(
+    schema,
+    "contentMediaType",
+    ({ value }) => {
+      if (value === "application/json") {
         return [
-          `.pipe(${parseSchema(value)}`,
+          '.transform((str, ctx) => { try { return JSON.parse(str); } catch (err) { ctx.addIssue({ code: "custom", message: "Invalid JSON" }); }}',
           ", ",
-          ")"
-        ]
+          ")",
+        ];
+      }
+    }
+  );
+
+  if (contentMediaType != "") {
+    r += contentMediaType;
+    r += withMessage(schema, "contentSchema", ({ value }) => {
+      if (value && value instanceof Object) {
+        return [`.pipe(${parseSchema(value)}`, ", ", ")"];
       }
     });
   }
