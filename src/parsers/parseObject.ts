@@ -30,14 +30,15 @@ export function parseObject(
             result = addJsdocs(propSchema, result)
           }
 
-          const hasDefault =
-            typeof propSchema === "object" && propSchema.default !== undefined;
+          // const hasDefault =
+          //   typeof propSchema === "object" && propSchema.default !== undefined;
 
           const required = Array.isArray(objectSchema.required)
             ? objectSchema.required.includes(key)
             : typeof propSchema === "object" && propSchema.required === true;
 
-          const optional = !hasDefault && !required;
+          // const optional = !hasDefault && !required;
+          const optional =  !required;
 
           return optional ? `${result}.optional()` : result;
         })
